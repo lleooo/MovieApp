@@ -12,6 +12,9 @@ const actions = {
                 return respone.json();
             })
             .then((data) => {
+                data.results=data.results.filter(e=>{
+                   return e.poster_path!=null
+                })
                 context.state.movieData = data.results;
                 console.log("電影列表來了", context.state.movieData);
             });
