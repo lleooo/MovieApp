@@ -5,7 +5,7 @@
       <div
         class="movie"
         :id="d.id"
-        v-for="(d, index) in movieData"
+        v-for="(d, index) in this.$store.state.movieData"
         :key="index"
       >
         <observer @on-change="onChange" class="lazy">
@@ -27,7 +27,6 @@ export default {
   name: "movieList",
   data() {
     return {
-      movieData: [],
       imgPath: "https://image.tmdb.org/t/p/w500",
       love: [],
     };
@@ -40,7 +39,7 @@ export default {
         const x=image.children[0].childNodes[0].getAttribute('data-src')
         image.children[0].childNodes[0].src=x
         unoberserve()
-        console.log('aa')
+        console.log('該跑電影圖片了')
       }
     },
     detail(d, e) {
@@ -70,19 +69,9 @@ export default {
       }
     },
   },
-  watch: {},
 
   created() {
-    fetch(
-      "https://api.themoviedb.org/3/movie/popular?api_key=e147528034b3b1192f389af6460b3ad9&language=zh-TW&page=1"
-    )
-      .then((respone) => {
-        return respone.json();
-      })
-      .then((data) => {
-        this.movieData = data.results;
-        console.log("電影列表來了", this.movieData);
-      });
+    this.$store.dispatch('fetch')
   },
 
   mounted() {
@@ -95,7 +84,7 @@ export default {
   },
 
   updated() {
-    this.movieData.forEach((e) => {
+    this.$store.state.movieData.forEach((e) => {
       if (localStorage.getItem("love-movie") == null) return;
       if (localStorage.getItem("love-movie").includes(e.id)) {
         this.$refs[e.id][0].className = "love-active";

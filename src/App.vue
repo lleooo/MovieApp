@@ -2,14 +2,16 @@
   <div class="container">
     <Search/>
     <router-view></router-view>
+    <Footer/>
   </div>
 </template>
 
 <script>
 import Search from "./components/Search.vue";
-
+import Footer from "./components/Footer.vue";
 export default {
-  components: { Search},
+  components: { Search,Footer},
+
 };
 </script>
 
